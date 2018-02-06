@@ -58,13 +58,15 @@ class MartianRobotsManager {
     }
 
     private processRobotInstructions(inputInstructions: string) {
-        let input_instructions = inputInstructions.split('');
+        let robot_position,
+            input_instructions = inputInstructions.split('');
 
         input_instructions.forEach((instruction) => {
             if (instruction == 'L' || instruction == 'R') {
                 this.getRobotOrientation(instruction);
             } else {
-                this.getRobotPosition(this.robotPosition[1]);
+                robot_position = this.getRobotPosition(this.robotPosition[1]);
+                this.checkMarsBounds(robot_position);
             }
         });
 
@@ -88,13 +90,18 @@ class MartianRobotsManager {
     }
 
     private getRobotPosition(orientation: string) {
-        let orientation_step_coords = this.orientationStep[orientation];
-
-        let new_x = this.robotPosition[0]['x'] + orientation_step_coords['x'],
+        let orientation_step_coords = this.orientationStep[orientation],
+            new_x = this.robotPosition[0]['x'] + orientation_step_coords['x'],
             new_y = this.robotPosition[0]['y'] + orientation_step_coords['y'];
 
-        this.robotPosition[0]['x'] = new_x;
-        this.robotPosition[0]['y'] = new_y;
+        let new_coords = {'x' : new_x, 'y': new_y};
+
+        return new_coords;
+    }
+
+    private checkMarsBounds(coords: object) {
+        this.robotPosition[0]['x'] = coords['x'];
+        this.robotPosition[0]['y'] = coords['y'];
     }
 }
 

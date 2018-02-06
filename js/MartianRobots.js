@@ -33,13 +33,14 @@ class MartianRobotsManager {
         return initial_position_parsed;
     }
     processRobotInstructions(inputInstructions) {
-        let input_instructions = inputInstructions.split('');
+        let robot_position, input_instructions = inputInstructions.split('');
         input_instructions.forEach((instruction) => {
             if (instruction == 'L' || instruction == 'R') {
                 this.getRobotOrientation(instruction);
             }
             else {
-                this.getRobotPosition(this.robotPosition[1]);
+                robot_position = this.getRobotPosition(this.robotPosition[1]);
+                this.checkMarsBounds(robot_position);
             }
         });
         console.log(JSON.stringify(this.robotPosition));
@@ -56,10 +57,13 @@ class MartianRobotsManager {
         return this.robotPosition;
     }
     getRobotPosition(orientation) {
-        let orientation_step_coords = this.orientationStep[orientation];
-        let new_x = this.robotPosition[0]['x'] + orientation_step_coords['x'], new_y = this.robotPosition[0]['y'] + orientation_step_coords['y'];
-        this.robotPosition[0]['x'] = new_x;
-        this.robotPosition[0]['y'] = new_y;
+        let orientation_step_coords = this.orientationStep[orientation], new_x = this.robotPosition[0]['x'] + orientation_step_coords['x'], new_y = this.robotPosition[0]['y'] + orientation_step_coords['y'];
+        let new_coords = { 'x': new_x, 'y': new_y };
+        return new_coords;
+    }
+    checkMarsBounds(coords) {
+        this.robotPosition[0]['x'] = coords['x'];
+        this.robotPosition[0]['y'] = coords['y'];
     }
 }
 const martiansWrapper = $('.martians-wrapper');
