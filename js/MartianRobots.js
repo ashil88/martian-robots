@@ -14,7 +14,7 @@ class MartianRobotsManager {
         this.instructionsForm.on('submit', (e) => {
             e.preventDefault();
             this.robotInput = this.submitInstructionsForm();
-            this.robotPosition = this.setInitialRobotPosition(this.robotInput[0]);
+            this.robotPosition = MartianRobotsManager.setInitialRobotPosition(this.robotInput[0]);
             this.processRobotInstructions(this.robotInput[1]);
         });
     }
@@ -26,22 +26,25 @@ class MartianRobotsManager {
         return this.marsBounds;
     }
     submitInstructionsForm() {
-        let robot_input = this.instructionsForm.find('textarea').val(), robot_input_split = robot_input.split('\n');
-        return robot_input_split;
+        let robot_input = this.instructionsForm.find('textarea').val();
+        return robot_input.split('\n');
     }
-    setInitialRobotPosition(inputPosition) {
+    static setInitialRobotPosition(inputPosition) {
         let initial_position = inputPosition.split(' '), initial_position_parsed = [{ 'x': parseInt(initial_position[0]), 'y': parseInt(initial_position[1]) }, initial_position[2]];
         return initial_position_parsed;
     }
     processRobotInstructions(inputInstructions) {
-        let robot_position, input_instructions = inputInstructions.split('');
+        let skip_instruction = false, robot_position, input_instructions = inputInstructions.split('');
         input_instructions.forEach((instruction) => {
             if (instruction == 'L' || instruction == 'R') {
                 this.getRobotOrientation(instruction);
             }
             else {
                 robot_position = this.getRobotPosition(this.robotPosition[1]);
-                this.checkMarsBounds(robot_position);
+                if (this.robotScents.length > 0)
+                    skip_instruction = this.checkRobotScents(robot_position);
+                if (!skip_instruction)
+                    this.checkMarsBounds(robot_position);
             }
         });
         console.log(JSON.stringify(this.robotPosition));
@@ -59,11 +62,19 @@ class MartianRobotsManager {
     }
     getRobotPosition(orientation) {
         let orientation_step_coords = this.orientationStep[orientation], new_x = this.robotPosition[0]['x'] + orientation_step_coords['x'], new_y = this.robotPosition[0]['y'] + orientation_step_coords['y'];
-        let new_coords = { 'x': new_x, 'y': new_y };
-        return new_coords;
+        return { 'x': new_x, 'y': new_y };
+    }
+    checkRobotScents(coords) {
+        let skip_forward_step = false;
+        for (let scent of this.robotScents) {
+            if (scent['x'] == coords['x'] && scent['y'] == coords['y']) {
+                skip_forward_step = true;
+                break;
+            }
+        }
+        return skip_forward_step;
     }
     checkMarsBounds(coords) {
-        // TODO: check coords against robot scents
         if ((coords['x'] > this.marsBounds['x']) || (coords['y'] > this.marsBounds['y'])) {
             this.robotScents.push(coords);
             console.log('OUT OF BOUNDS');
