@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Martian Robots | Ashil Patel</title>
+
+    <link rel="stylesheet" href="css/bootswatch.lux.min.css">
+    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+</head>
+<body>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading display-3">Martian Robots</h1>
+            <!--<p class="lead text-dark"></p>-->
+        </div>
+    </section>
+
+    <div class="martians-wrapper">
+        <section class="form-wrapper">
+            <div class="container">
+                <form id="form">
+                    <div class="form-row">
+                        <fieldset class="form-group col-md-4">
+                            <label for="coord_x">Coordinate X</label>
+                            <input class="form-control" name="coord_x" id="coord_x" type="number" step="1" min="0" max="50" required>
+                        </fieldset>
+                        <fieldset class="form-group col-md-4">
+                            <label for="coord_y">Coordinate Y</label>
+                            <input class="form-control" name="coord_y" id="coord_y" type="number" step="1" min="0" max="50" required>
+                        </fieldset>
+                    </div>
+                    <button class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="js/MartianRobots.js"></script>
+</body>
+</html>
