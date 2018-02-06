@@ -10,6 +10,7 @@ class MartianRobotsManager {
     private robotInput: Array<string>;
     private robotInstructions: Array<any>;
     private robotPosition: Array<any>;
+    private robotScents: Array<object>;
 
     constructor(martiansWrapper: JQuery) {
 
@@ -18,6 +19,7 @@ class MartianRobotsManager {
         this.marsBounds = {'x': 0, 'y': 0};
         this.orientation = ['N', 'E', 'S', 'W'];
         this.orientationStep = {'N' : {'x' : 0, 'y' : 1}, 'E' : {'x' : 1, 'y' : 0}, 'S' : {'x' : 0, 'y' : -1}, 'W' : {'x' : -1, 'y' : 0}};
+        this.robotScents = [];
 
         this.coordinatesForm.on('submit', (e) => {
             e.preventDefault();
@@ -100,8 +102,17 @@ class MartianRobotsManager {
     }
 
     private checkMarsBounds(coords: object) {
-        this.robotPosition[0]['x'] = coords['x'];
-        this.robotPosition[0]['y'] = coords['y'];
+
+        // TODO: check coords against robot scents
+
+        if ((coords['x'] > this.marsBounds['x']) || (coords['y'] > this.marsBounds['y'])) {
+            this.robotScents.push(coords);
+            console.log('OUT OF BOUNDS');
+            // TODO: break here. Set orientation to 'LOST'. Don't execute any other instructions
+        } else {
+            this.robotPosition[0]['x'] = coords['x'];
+            this.robotPosition[0]['y'] = coords['y'];
+        }
     }
 }
 
