@@ -21,7 +21,7 @@
     <div class="martians-wrapper">
         <section class="form-wrapper">
             <div class="container">
-                <form id="form">
+                <form id="bounds">
                     <div class="form-row">
                         <fieldset class="form-group col-md-4">
                             <label for="coord_x">Coordinate X</label>
@@ -30,6 +30,16 @@
                         <fieldset class="form-group col-md-4">
                             <label for="coord_y">Coordinate Y</label>
                             <input class="form-control" name="coord_y" id="coord_y" type="number" step="1" min="0" max="50" required>
+                        </fieldset>
+                    </div>
+                    <button class="btn btn-primary">Submit</button>
+                </form>
+
+                <form id="instructions">
+                    <div class="form-row">
+                        <fieldset class="form-group col-md-6">
+                            <label for="robot-input">Robot instructions</label>
+                            <textarea class="form-control" name="robot-input" id="robot-input" required></textarea>
                         </fieldset>
                     </div>
                     <button class="btn btn-primary">Submit</button>
