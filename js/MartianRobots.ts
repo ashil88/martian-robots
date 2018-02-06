@@ -6,6 +6,7 @@ class MartianRobotsManager {
     private instructionsForm: JQuery;
     private marsBounds: object;
     private orientation: Array<string>;
+    private orientationStep: object;
     private robotInput: Array<string>;
     private robotInstructions: Array<any>;
     private robotPosition: Array<any>;
@@ -16,6 +17,7 @@ class MartianRobotsManager {
         this.instructionsForm = martiansWrapper.find('#instructions');
         this.marsBounds = {'x': 0, 'y': 0};
         this.orientation = ['N', 'E', 'S', 'W'];
+        this.orientationStep = {'N' : {'x' : 0, 'y' : 1}, 'E' : {'x' : 1, 'y' : 0}, 'S' : {'x' : 0, 'y' : -1}, 'W' : {'x' : -1, 'y' : 0}};
 
         this.coordinatesForm.on('submit', (e) => {
             e.preventDefault();
@@ -32,8 +34,11 @@ class MartianRobotsManager {
     }
 
     private submitCoordinatesForm() {
-        this.marsBounds['x'] = parseFloat($('#coord_x').val().toString()),
+        this.marsBounds['x'] = parseFloat($('#coord_x').val().toString());
         this.marsBounds['y'] = parseFloat($('#coord_y').val().toString());
+
+        this.coordinatesForm.find('input').attr('readonly', true);
+        this.coordinatesForm.find('button').attr('disabled', true);
 
         return this.marsBounds;
     }
@@ -59,9 +64,11 @@ class MartianRobotsManager {
             if (instruction == 'L' || instruction == 'R') {
                 this.getRobotOrientation(instruction);
             } else {
-                console.log('moving forward')
+                this.getRobotPosition(this.robotPosition[1]);
             }
         });
+
+        console.log(JSON.stringify(this.robotPosition));
 
         return input_instructions;
     }
@@ -78,6 +85,16 @@ class MartianRobotsManager {
         this.robotPosition[1] = this.orientation[current_orientation_index];
 
         return this.robotPosition;
+    }
+
+    private getRobotPosition(orientation: string) {
+        let orientation_step_coords = this.orientationStep[orientation];
+
+        let new_x = this.robotPosition[0]['x'] + orientation_step_coords['x'],
+            new_y = this.robotPosition[0]['y'] + orientation_step_coords['y'];
+
+        this.robotPosition[0]['x'] = new_x;
+        this.robotPosition[0]['y'] = new_y;
     }
 }
 
