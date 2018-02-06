@@ -56,10 +56,28 @@ class MartianRobotsManager {
         let input_instructions = inputInstructions.split('');
 
         input_instructions.forEach((instruction) => {
-           console.log(instruction);
+            if (instruction == 'L' || instruction == 'R') {
+                this.getRobotOrientation(instruction);
+            } else {
+                console.log('moving forward')
+            }
         });
 
         return input_instructions;
+    }
+
+    private getRobotOrientation(direction: string) {
+        let current_orientation = this.robotPosition[1],
+            current_orientation_index = this.orientation.indexOf(current_orientation);
+
+        (direction == 'R') ? current_orientation_index++ : current_orientation_index--;
+
+        if (current_orientation_index == -1) current_orientation_index = 3;
+        if (current_orientation_index == 4) current_orientation_index = 0;
+
+        this.robotPosition[1] = this.orientation[current_orientation_index];
+
+        return this.robotPosition;
     }
 }
 
