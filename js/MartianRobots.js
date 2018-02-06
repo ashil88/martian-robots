@@ -3,7 +3,7 @@ class MartianRobotsManager {
     constructor(martiansWrapper) {
         this.coordinatesForm = martiansWrapper.find('#bounds');
         this.instructionsForm = martiansWrapper.find('#instructions');
-        this.marsBounds = [];
+        this.marsBounds = { 'x': 0, 'y': 0 };
         this.orientation = ['N', 'E', 'S', 'W'];
         this.coordinatesForm.on('submit', (e) => {
             e.preventDefault();
@@ -17,18 +17,17 @@ class MartianRobotsManager {
         });
     }
     submitCoordinatesForm() {
-        let coordinate_x = parseFloat($('#coord_x').val().toString()), coordinate_y = parseFloat($('#coord_y').val().toString());
-        this.marsBounds = [coordinate_x, coordinate_y];
+        this.marsBounds['x'] = parseFloat($('#coord_x').val().toString()),
+            this.marsBounds['y'] = parseFloat($('#coord_y').val().toString());
+        return this.marsBounds;
     }
     submitInstructionsForm() {
         let robot_input = this.instructionsForm.find('textarea').val(), robot_input_split = robot_input.split('\n');
         return robot_input_split;
     }
     setInitialRobotPosition(inputPosition) {
-        let initial_position = inputPosition.split(' ');
-        initial_position[0] = parseInt(initial_position[0]);
-        initial_position[1] = parseInt(initial_position[1]);
-        return initial_position;
+        let initial_position = inputPosition.split(' '), initial_position_parsed = [{ 'x': parseInt(initial_position[0]), 'y': parseInt(initial_position[1]) }, initial_position[2]];
+        return initial_position_parsed;
     }
     processRobotInstructions(inputInstructions) {
         let input_instructions = inputInstructions.split('');
