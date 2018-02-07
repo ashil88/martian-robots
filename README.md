@@ -1,4 +1,4 @@
-# Martian Robot
+# Martian Robots
 Available at https://ashil88.github.io/martian-robots/
 
 ## JS Libraries
