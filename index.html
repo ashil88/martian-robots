@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="css/bootswatch.lux.min.css">
     <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="css/override.css">
 </head>
 <body>
     <section class="jumbotron text-center">
@@ -19,31 +20,39 @@
     </section>
 
     <div class="martians-wrapper">
-        <section class="form-wrapper">
-            <div class="container">
-                <form id="bounds">
-                    <div class="form-row">
-                        <fieldset class="form-group col-md-4">
-                            <label for="coord_x">Coordinate X</label>
-                            <input class="form-control" name="coord_x" id="coord_x" type="number" step="1" min="0" max="50" required>
-                        </fieldset>
-                        <fieldset class="form-group col-md-4">
-                            <label for="coord_y">Coordinate Y</label>
-                            <input class="form-control" name="coord_y" id="coord_y" type="number" step="1" min="0" max="50" required>
-                        </fieldset>
-                    </div>
-                    <button class="btn btn-primary">Submit</button>
-                </form>
+        <section class="bounds-wrapper container">
+            <form id="bounds">
+                <div class="form-row">
+                    <fieldset class="form-group col">
+                        <label for="coord_x">Coordinate X</label>
+                        <input class="form-control" name="coord_x" id="coord_x" type="number" step="1" min="0" max="50" required>
+                    </fieldset>
+                    <fieldset class="form-group col">
+                        <label for="coord_y">Coordinate Y</label>
+                        <input class="form-control" name="coord_y" id="coord_y" type="number" step="1" min="0" max="50" required>
+                    </fieldset>
+                </div>
+                <button class="btn btn-primary">Submit</button>
+            </form>
+        </section>
+        <section class="instructions-wrapper container">
+            <form id="instructions">
+                <div class="form-row">
+                    <fieldset class="form-group col">
+                        <label for="robot-input">Robot instructions</label>
+                        <textarea class="form-control" name="robot-input" id="robot-input" required></textarea>
+                        <small id="passwordHelpBlock" class="form-text text-muted">
+                            Instructions should be submitted for a single robot at a time. Two lines per set of instructions.
+                        </small>
+                    </fieldset>
+                </div>
+                <button class="btn btn-primary">Submit</button>
+            </form>
 
-                <form id="instructions">
-                    <div class="form-row">
-                        <fieldset class="form-group col-md-6">
-                            <label for="robot-input">Robot instructions</label>
-                            <textarea class="form-control" name="robot-input" id="robot-input" required></textarea>
-                        </fieldset>
-                    </div>
-                    <button class="btn btn-primary">Submit</button>
-                </form>
+            <div class="output">
+                <ul>
+
+                </ul>
             </div>
         </section>
     </div>

@@ -4,6 +4,7 @@ class MartianRobotsManager {
 
     private coordinatesForm: JQuery;
     private instructionsForm: JQuery;
+    private instructionsWrapper: JQuery;
     private marsBounds: object;
     private orientation: Array<string>;
     private orientationStep: object;
@@ -15,6 +16,7 @@ class MartianRobotsManager {
 
         this.coordinatesForm = martiansWrapper.find('#bounds');
         this.instructionsForm = martiansWrapper.find('#instructions');
+        this.instructionsWrapper = martiansWrapper.find('.instructions-wrapper');
         this.marsBounds = {'x': 0, 'y': 0};
         this.orientation = ['N', 'E', 'S', 'W'];
         this.orientationStep = {'N' : {'x' : 0, 'y' : 1}, 'E' : {'x' : 1, 'y' : 0}, 'S' : {'x' : 0, 'y' : -1}, 'W' : {'x' : -1, 'y' : 0}};
@@ -24,6 +26,7 @@ class MartianRobotsManager {
         this.coordinatesForm.on('submit', (e) => {
             e.preventDefault();
             this.submitCoordinatesForm();
+            this.instructionsWrapper.fadeIn('slow');
         });
 
         this.instructionsForm.on('submit', (e) => {
