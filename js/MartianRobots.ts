@@ -4,6 +4,7 @@ class MartianRobotsManager {
 
     private coordinatesForm: JQuery;
     private instructionsForm: JQuery;
+    private instructionsOutput: JQuery;
     private instructionsWrapper: JQuery;
     private marsBounds: object;
     private orientation: Array<string>;
@@ -17,6 +18,7 @@ class MartianRobotsManager {
         this.coordinatesForm = martiansWrapper.find('#bounds');
         this.instructionsForm = martiansWrapper.find('#instructions');
         this.instructionsWrapper = martiansWrapper.find('.instructions-wrapper');
+        this.instructionsOutput = this.instructionsWrapper.find('ul');
         this.marsBounds = {'x': 0, 'y': 0};
         this.orientation = ['N', 'E', 'S', 'W'];
         this.orientationStep = {'N' : {'x' : 0, 'y' : 1}, 'E' : {'x' : 1, 'y' : 0}, 'S' : {'x' : 0, 'y' : -1}, 'W' : {'x' : -1, 'y' : 0}};
@@ -82,6 +84,8 @@ class MartianRobotsManager {
             }
         }
 
+        this.outputRobotPosition(this.robotPosition);
+
         return this.robotPosition;
     }
 
@@ -133,6 +137,24 @@ class MartianRobotsManager {
         }
 
         return out_of_bounds;
+    }
+
+    private outputRobotPosition(finalPosition: Array<any>) {
+        let output = `<li class="list-group-item">`;
+
+        finalPosition.forEach((position, i) => {
+           if (i == 0) {
+               output += `${position['x']} ${position['y']}`;
+           } else {
+               output += ` ${position}`;
+           }
+        });
+
+        output += `</li>`;
+
+        this.instructionsOutput.append(output);
+
+        return output;
     }
 }
 

@@ -4,6 +4,7 @@ class MartianRobotsManager {
         this.coordinatesForm = martiansWrapper.find('#bounds');
         this.instructionsForm = martiansWrapper.find('#instructions');
         this.instructionsWrapper = martiansWrapper.find('.instructions-wrapper');
+        this.instructionsOutput = this.instructionsWrapper.find('ul');
         this.marsBounds = { 'x': 0, 'y': 0 };
         this.orientation = ['N', 'E', 'S', 'W'];
         this.orientationStep = { 'N': { 'x': 0, 'y': 1 }, 'E': { 'x': 1, 'y': 0 }, 'S': { 'x': 0, 'y': -1 }, 'W': { 'x': -1, 'y': 0 } };
@@ -53,6 +54,7 @@ class MartianRobotsManager {
                     break;
             }
         }
+        this.outputRobotPosition(this.robotPosition);
         return this.robotPosition;
     }
     getRobotOrientation(direction) {
@@ -91,6 +93,20 @@ class MartianRobotsManager {
             this.robotPosition[0]['y'] = coords['y'];
         }
         return out_of_bounds;
+    }
+    outputRobotPosition(finalPosition) {
+        let output = `<li class="list-group-item">`;
+        finalPosition.forEach((position, i) => {
+            if (i == 0) {
+                output += `${position['x']} ${position['y']}`;
+            }
+            else {
+                output += ` ${position}`;
+            }
+        });
+        output += `</li>`;
+        this.instructionsOutput.append(output);
+        return output;
     }
 }
 const martiansWrapper = $('.martians-wrapper');

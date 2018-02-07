@@ -4,3 +4,6 @@
 .martians-wrapper .instructions-wrapper {
   display: none;
 }
+.martians-wrapper .instructions-wrapper .output {
+  margin: 30px 0;
+}
