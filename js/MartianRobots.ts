@@ -41,22 +41,26 @@ class MartianRobotsManager {
         });
     }
 
+    // set the bounds for Mars
     private submitCoordinatesForm() {
         this.marsBounds['x'] = parseFloat($('#coord_x').val().toString());
         this.marsBounds['y'] = parseFloat($('#coord_y').val().toString());
 
+        // disable the inputs/button for the bounds form
         this.coordinatesForm.find('input').attr('readonly', true);
         this.coordinatesForm.find('button').attr('disabled', true);
 
         return this.marsBounds;
     }
 
+    // split the robot instructions into an array
     private submitInstructionsForm() {
         let robot_input = this.instructionsForm.find('textarea').val();
 
         return robot_input.split('\n');
     }
 
+    // set the initial position of the robot as an array
     private static setInitialRobotPosition(inputPosition: string) {
         let initial_position = inputPosition.split(' '),
             initial_position_parsed = [{'x' : parseInt(initial_position[0]), 'y' : parseInt(initial_position[1])}, initial_position[2]];
@@ -64,22 +68,29 @@ class MartianRobotsManager {
         return initial_position_parsed;
     }
 
+    // process the robot instructions
     private processRobotInstructions(inputInstructions: string) {
         let skip_instruction = false,
             over_the_edge = false,
             robot_position,
             input_instructions = inputInstructions.split('');
 
+        // loop through each instruction
         for (let instruction of input_instructions) {
             if (instruction == 'L' || instruction == 'R') {
+                // if instruction is to turn, get the new orientation
                 this.getRobotOrientation(instruction);
             } else {
+                // find the new coords after moving forward
                 robot_position = this.getRobotPosition(this.robotPosition[1]);
 
+                // if there are 'scents', check new coords against them
                 if (this.robotScents.length > 0)    skip_instruction = this.checkRobotScents(robot_position);
 
+                // if the coords don't match any scents, check against bounds
                 if (! skip_instruction) over_the_edge = this.checkMarsBounds(robot_position);
 
+                // if the coords are out of bounds, break the loop - the robot is gone!
                 if (over_the_edge)  break;
             }
         }
@@ -89,6 +100,7 @@ class MartianRobotsManager {
         return this.robotPosition;
     }
 
+    // determine the new orientation after turning left or right
     private getRobotOrientation(direction: string) {
         let current_orientation = this.robotPosition[1],
             current_orientation_index = this.orientation.indexOf(current_orientation);
@@ -103,6 +115,7 @@ class MartianRobotsManager {
         return this.robotPosition;
     }
 
+    // calculate the new coordinates after moving forward
     private getRobotPosition(orientation: string) {
         let orientation_step_coords = this.orientationStep[orientation],
             new_x = this.robotPosition[0]['x'] + orientation_step_coords['x'],
@@ -111,10 +124,13 @@ class MartianRobotsManager {
         return {'x' : new_x, 'y': new_y};
     }
 
+    // check new coordinates against robot scents
     private checkRobotScents(coords:object) {
         let skip_forward_step = false;
 
+        // loop through all scents
         for (let scent of this.robotScents) {
+            // if the coords match a scent, break loop
             if (scent['x'] == coords['x'] && scent['y'] == coords['y']) {
                 skip_forward_step = true;
                 break;
@@ -123,15 +139,18 @@ class MartianRobotsManager {
         return skip_forward_step;
     }
 
+    // check the new coords are within the bounds of Mars
     private checkMarsBounds(coords: object) {
         let out_of_bounds = false;
 
         if ((coords['x'] > this.marsBounds['x']) || (coords['y'] > this.marsBounds['y'])) {
+            // if new coords are out of bounds, add 'scent'
             this.robotScents.push(coords);
             this.robotPosition.push('LOST');
 
             out_of_bounds = true;
         } else {
+            // else set the robot position with the new coords
             this.robotPosition[0]['x'] = coords['x'];
             this.robotPosition[0]['y'] = coords['y'];
         }
@@ -139,6 +158,7 @@ class MartianRobotsManager {
         return out_of_bounds;
     }
 
+    // output the final postion of the robot
     private outputRobotPosition(finalPosition: Array<any>) {
         let output = `<li class="list-group-item">`;
 
